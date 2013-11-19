@@ -1,0 +1,77 @@
+<head>
+<title>So Call Me Shady</title>
+<script src="https://dl.dropboxusercontent.com/u/15570925/bing/jquery-1.10.1.min.js"></script>
+<!--Taken/Heavily edited completely without permission from http://www.pogocheats.net/bing-rewards-bot -->
+<script>
+var count = 32;
+function Start()
+{
+	document.getElementById('status_message').innerHTML = 'Loading dictionary file ...';
+	$.ajax({
+		url : "https://dl.dropboxusercontent.com/u/15570925/bing/mtr_smp.txt",
+		dataType: "text",
+		success : function (data) {
+			window.words = data.split("\n");
+			Search();
+		}
+	});
+}
+
+waitTimer = 0;
+function Search()
+{
+	if (waitTimer == 0)
+	{
+		waitTimer = Math.floor(2*Math.random()) + 3; //Wait between 3 and 5 seconds
+		count--;
+
+        var idx = Math.floor(window.words.length * Math.random());
+        searchQuery = window.words[idx];
+
+		document.getElementById('status_message').innerHTML = 'Loading search results for <strong>'+searchQuery+'</strong> ...';
+		document.getElementById('frmLoader').src = 'http://www.bing.com/search?q=' + searchQuery;
+		
+		if (count == 0)
+		{
+			window.open('', '_self', ''); 
+			window.close()
+		}
+	}
+	else
+	{
+		document.getElementById('status_message').innerHTML = 'Sleeping for '+waitTimer+' seconds ...';
+		waitTimer--;
+	}
+	t = setTimeout("Search()", 1000);
+}
+/*
+setInterval(function(){
+    
+    if(count>0)
+	{
+		var idx = Math.floor(window.words.length * Math.random());
+		searchQuery = window.words[idx];
+		document.getElementById('status_message').innerHTML = 'Loading search results for <strong>'+searchQuery+'</strong> ...';
+		document.getElementById('frmLoader').src = 'http://www.bing.com/search?q=' + searchQuery;
+		count--;
+		
+    }
+	else
+	{
+        window.open('', '_self', ''); 
+		window.close()
+    }
+},timeout);
+*/
+</script>
+</head>
+
+<body onload="Start()">
+Hi, it's just 'lil old me! I think Bing is catching on to us doing the exact same searches everyday.
+<br>Ima try to mix it up a bit by generating random queries from a larger list of words. Hooray for MeSH terms! -T!
+<div id="status_message"></div>
+
+<iframe sandbox="allow-forms allow-scripts" allowtransparency="true" src="http://www.bing.com" id="frmLoader" name="frmLoader" style="width:100%; height:600px; margin-top:5px;"></iframe><br /><br />
+
+</body>
+</html>
